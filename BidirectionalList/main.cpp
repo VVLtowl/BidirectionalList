@@ -34,7 +34,7 @@ public:
 	int GetScore() { return score; };
 };
 
-class SCORE_INFO_LIST//リスト
+class SCORE_INFO_LIST//リスト(ノード管理用)
 {
 private:
 	SCORE_INFO* head = nullptr;
