@@ -13,17 +13,17 @@ using namespace std;
 
 
 
-class DOUBLE_LINKED_LIST_NODE
-{
-private:
-	DOUBLE_LINKED_LIST_NODE* pre;
-	DOUBLE_LINKED_LIST_NODE* next;
-public:
-	void SetPreNode(DOUBLE_LINKED_LIST_NODE* _pre) { pre = _pre; };
-	void SetNextNode(DOUBLE_LINKED_LIST_NODE* _next) { next = _next; };
-	DOUBLE_LINKED_LIST_NODE* GetPreNode() { return pre; };
-	DOUBLE_LINKED_LIST_NODE* GetNextNode() { return next; };
-};
+//class DOUBLE_LINKED_LIST_NODE
+//{
+//private:
+//	DOUBLE_LINKED_LIST_NODE* pre;
+//	DOUBLE_LINKED_LIST_NODE* next;
+//public:
+//	void SetPreNode(DOUBLE_LINKED_LIST_NODE* _pre) { pre = _pre; };
+//	void SetNextNode(DOUBLE_LINKED_LIST_NODE* _next) { next = _next; };
+//	DOUBLE_LINKED_LIST_NODE* GetPreNode() { return pre; };
+//	DOUBLE_LINKED_LIST_NODE* GetNextNode() { return next; };
+//};
 
 
 //class DOUBLE_LINKED_LIST
@@ -73,7 +73,9 @@ private:
 	SCORE_INFO* tail = nullptr;
 public:
 	void AddScoreInfo(SCORE_INFO* _scoreInfo);
-	void PrintAll();
+	void PrintAllFromHead();
+	void PrintAllFromTail();
+	void Clear();
 
 	SCORE_INFO* GetHead() { return head; };
 	SCORE_INFO* GetTail() { return tail; };
@@ -82,9 +84,8 @@ public:
 
 int main(void)
 {
-	//データを保存するための
+	//データを保存するための双方向リスト
 	SCORE_INFO_LIST scoreList;
-
 
 	//ファイルを読み込んで、データを取得
 	{
@@ -94,35 +95,41 @@ int main(void)
 		int score;
 		char name[WORD_SIZE];
 
-
-
-		fp = fopen(fileName, "r"); // ファイルを開く。失敗するとNULLを返す。
+		fp = fopen(fileName, "r"); // ファイルを開く、失敗するとNULLを返す。
 		if (fp == NULL) {
-			printf("[%s] file open error!\n", fileName);
+			cout << fileName << "file open error!" << endl;
 			return -1;
 		}
 		else {
-			printf("[%s] file opened!\n", fileName);
+			cout << fileName << "file opened!" << endl;
 		}
-
 		
 		while (fscanf(fp, "%d\t%s", &score, name) != EOF) {
+
+#if _DEBUG
 			cout << name << ":" << score<<endl;//test
+#endif
 			SCORE_INFO* scoreInfo=new SCORE_INFO(score, name);
 			scoreList.AddScoreInfo(scoreInfo);
 		}
 
 		fclose(fp);
-	
-		scoreList.PrintAll();
 	}
 
+	//読み取ったデータを出力
+	{
+		scoreList.PrintAllFromHead();
+		scoreList.PrintAllFromTail();
+	}
+
+
+	scoreList.Clear();
+	(void)getchar();
 	return 0;
 }
 
 
 //関数定義-----------------------------------------
-
 void SCORE_INFO_LIST::AddScoreInfo(SCORE_INFO* _scoreInfo)
 {
 	SCORE_INFO* preNode = tail;
@@ -140,12 +147,35 @@ void SCORE_INFO_LIST::AddScoreInfo(SCORE_INFO* _scoreInfo)
 	}
 }
 
-void SCORE_INFO_LIST::PrintAll()
+void SCORE_INFO_LIST::PrintAllFromHead()
 {
 	SCORE_INFO* node = head;
 	if (node == nullptr)return;
 
 	do{
-		cout << node->GetName() << "\t\t:" << node->GetScore() << endl;
+		cout << node->GetName() << (node->GetName().size()<8? "\t\t:":"\t:")<< node->GetScore() << endl;
 	} while ((node = (SCORE_INFO*)node->GetNextNode()) != nullptr);
+}
+
+void SCORE_INFO_LIST::PrintAllFromTail()
+{
+	SCORE_INFO* node = tail;
+	if (node == nullptr)return;
+
+	do {
+		cout << node->GetName() << (node->GetName().size() < 8 ? "\t\t:" : "\t:") << node->GetScore() << endl;
+	} while ((node = (SCORE_INFO*)node->GetPreNode()) != nullptr);
+}
+
+void SCORE_INFO_LIST::Clear()
+{
+	SCORE_INFO* node = head;
+	if (node == nullptr)return;
+
+	SCORE_INFO* next = node;
+	do {
+		node = next;
+		next = next->GetNextNode();
+		delete node;
+	} while (next != nullptr);
 }
