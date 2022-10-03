@@ -5,7 +5,6 @@
 #define _CRT_SECURE_NO_WARNINGS
 #include <stdio.h>
 #include <stdlib.h>
-//#include <string>
 #include <iostream>
 
 using namespace std;
@@ -56,8 +55,6 @@ public:
 		score(_score),
 		name(_name)
 	{
-		pre = new SCORE_INFO();
-		next = new SCORE_INFO();
 	};
 
 	void SetPreNode(SCORE_INFO* _pre) { pre = _pre; };
@@ -93,11 +90,9 @@ int main(void)
 	{
 		FILE* fp;
 		char fileName[] = "Scores.txt";
-		//int chr;
 
 		int score;
 		char name[WORD_SIZE];
-		//char word[WORD_SIZE];
 
 
 
@@ -135,12 +130,13 @@ void SCORE_INFO_LIST::AddScoreInfo(SCORE_INFO* _scoreInfo)
 	if (preNode == nullptr)
 	{
 		head = nextNode;
+		tail = nextNode;
 	}
 	else
 	{
 		preNode->SetNextNode(nextNode);
 		nextNode->SetPreNode(preNode);
-		head = nextNode;
+		tail = nextNode;
 	}
 }
 
@@ -150,6 +146,6 @@ void SCORE_INFO_LIST::PrintAll()
 	if (node == nullptr)return;
 
 	do{
-		cout << node->GetName() << "\t:" << node->GetScore() << endl;
+		cout << node->GetName() << "\t\t:" << node->GetScore() << endl;
 	} while ((node = (SCORE_INFO*)node->GetNextNode()) != nullptr);
 }
