@@ -8,49 +8,17 @@
 #include <iostream>
 
 using namespace std;
-
 #define WORD_SIZE (50)
 
-
-
-//class DOUBLE_LINKED_LIST_NODE
-//{
-//private:
-//	DOUBLE_LINKED_LIST_NODE* pre;
-//	DOUBLE_LINKED_LIST_NODE* next;
-//public:
-//	void SetPreNode(DOUBLE_LINKED_LIST_NODE* _pre) { pre = _pre; };
-//	void SetNextNode(DOUBLE_LINKED_LIST_NODE* _next) { next = _next; };
-//	DOUBLE_LINKED_LIST_NODE* GetPreNode() { return pre; };
-//	DOUBLE_LINKED_LIST_NODE* GetNextNode() { return next; };
-//};
-
-
-//class DOUBLE_LINKED_LIST
-//{
-//protected:
-//	DOUBLE_LINKED_LIST_NODE* head;
-//	DOUBLE_LINKED_LIST_NODE* tail;
-//
-//public:
-//	void Add(DOUBLE_LINKED_LIST_NODE* _node);
-//	void Remove(DOUBLE_LINKED_LIST_NODE* _node);
-//	void Clear();
-//	DOUBLE_LINKED_LIST_NODE* GetHead() { return head; };
-//	DOUBLE_LINKED_LIST_NODE* GetTail() { return tail; };
-//};
-//
-
-
-class SCORE_INFO //: public DOUBLE_LINKED_LIST_NODE
+//クラス定義---------------------------------------
+class SCORE_INFO//ノード
 {
 private:
-	SCORE_INFO* pre;
-	SCORE_INFO* next;
+	SCORE_INFO* pre = nullptr;
+	SCORE_INFO* next = nullptr;
 	int score;
 	string name;
 public:
-	SCORE_INFO() {};
 	SCORE_INFO(int _score, string _name) :
 		score(_score),
 		name(_name)
@@ -66,7 +34,7 @@ public:
 	int GetScore() { return score; };
 };
 
-class SCORE_INFO_LIST
+class SCORE_INFO_LIST//リスト
 {
 private:
 	SCORE_INFO* head = nullptr;
@@ -82,6 +50,7 @@ public:
 };
 
 
+//main関数-----------------------------------------
 int main(void)
 {
 	//データを保存するための双方向リスト
@@ -119,7 +88,9 @@ int main(void)
 	//読み取ったデータを出力
 	{
 		scoreList.PrintAllFromHead();
+#if 0
 		scoreList.PrintAllFromTail();
+#endif
 	}
 
 
@@ -175,7 +146,7 @@ void SCORE_INFO_LIST::Clear()
 	SCORE_INFO* next = node;
 	do {
 		node = next;
-		next = next->GetNextNode();
+		next = node->GetNextNode();//削除される前に次のノードを保存
 		delete node;
 	} while (next != nullptr);
 }
