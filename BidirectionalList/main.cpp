@@ -140,13 +140,13 @@ void SCORE_INFO_LIST::PrintAllFromTail()
 
 void SCORE_INFO_LIST::Clear()
 {
-	SCORE_INFO* node = head;
-	if (node == nullptr)return;
+	SCORE_INFO* del = head;
+	if (del == nullptr)return;
 
-	SCORE_INFO* next = node;
+	SCORE_INFO* next = del;
 	do {
-		node = next;
-		next = node->GetNextNode();//削除される前に次のノードを格納
-		delete node;
+		del = next;
+		next = del->GetNextNode();//削除される前に次のノードを格納
+		delete del;
 	} while (next != nullptr);
 }
