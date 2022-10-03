@@ -14,7 +14,7 @@ using namespace std;
 class SCORE_INFO//ƒm[ƒh
 {
 private:
-	SCORE_INFO* pre = nullptr;
+	SCORE_INFO* prev = nullptr;
 	SCORE_INFO* next = nullptr;
 	int score;
 	string name;
@@ -25,9 +25,9 @@ public:
 	{
 	};
 
-	void SetPreNode(SCORE_INFO* _pre) { pre = _pre; };
+	void SetPrevNode(SCORE_INFO* _prev) { prev = _prev; };
 	void SetNextNode(SCORE_INFO* _next) { next = _next; };
-	SCORE_INFO* GetPreNode() { return pre; };
+	SCORE_INFO* GetPrevNode() { return prev; };
 	SCORE_INFO* GetNextNode() { return next; };
 
 	string GetName() { return name; };
@@ -103,17 +103,17 @@ int main(void)
 //ŠÖ”’è‹`-----------------------------------------
 void SCORE_INFO_LIST::AddScoreInfo(SCORE_INFO* _scoreInfo)
 {
-	SCORE_INFO* preNode = tail;
+	SCORE_INFO* prevNode = tail;
 	SCORE_INFO* nextNode = _scoreInfo;
-	if (preNode == nullptr)
+	if (prevNode == nullptr)
 	{
 		head = nextNode;
 		tail = nextNode;
 	}
 	else
 	{
-		preNode->SetNextNode(nextNode);
-		nextNode->SetPreNode(preNode);
+		prevNode->SetNextNode(nextNode);
+		nextNode->SetPrevNode(prevNode);
 		tail = nextNode;
 	}
 }
@@ -135,7 +135,7 @@ void SCORE_INFO_LIST::PrintAllFromTail()
 
 	do {
 		cout << node->GetName() << (node->GetName().size() < 8 ? "\t\t:" : "\t:") << node->GetScore() << endl;
-	} while ((node = (SCORE_INFO*)node->GetPreNode()) != nullptr);
+	} while ((node = (SCORE_INFO*)node->GetPrevNode()) != nullptr);
 }
 
 void SCORE_INFO_LIST::Clear()
