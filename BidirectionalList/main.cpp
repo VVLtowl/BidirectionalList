@@ -53,7 +53,7 @@ public:
 //main関数-----------------------------------------
 int main(void)
 {
-	//データを保存するための双方向リスト
+	//データを格納するための双方向リスト
 	SCORE_INFO_LIST scoreList;
 
 	//ファイルを読み込んで、データを取得
@@ -146,7 +146,7 @@ void SCORE_INFO_LIST::Clear()
 	SCORE_INFO* next = node;
 	do {
 		node = next;
-		next = node->GetNextNode();//削除される前に次のノードを保存
+		next = node->GetNextNode();//削除される前に次のノードを格納
 		delete node;
 	} while (next != nullptr);
 }
